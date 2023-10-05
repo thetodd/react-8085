@@ -1,0 +1,13 @@
+.flags-title {
+    font-weight: 800;
+}
+
+.flags-row {
+    display: flex;
+}
+
+.flags-row span {
+    display: inline-block;
+    width: 1.6em;
+    text-align: center;
+}
