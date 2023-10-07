@@ -1,4 +1,5 @@
 import './App.css'
+import AssemblerEditor from './CodeEditor'
 
 function App() {
   return (
@@ -11,9 +12,8 @@ function App() {
         <div className="placeholder">Flags</div>
       </div>
       <div className="row">
-        <div id="codeeditor" className="placeholder">
-          Codeeditor
-        </div>
+        <AssemblerEditor />
+        <div className="placeholder">Memory</div>
       </div>
     </div>
   )
