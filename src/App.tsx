@@ -1,4 +1,5 @@
 import './App.css'
+import AssemblerEditor from './CodeEditor'
 import FlagsRegister from './widgets/FlagsRegister'
 import RegisterView from './widgets/RegisterView'
 
@@ -28,9 +29,8 @@ function App() {
         </div>
       </div>
       <div className="row">
-        <div id="codeeditor" className="placeholder">
-          Codeeditor
-        </div>
+        <AssemblerEditor />
+        <div className="placeholder">Memory</div>
       </div>
     </div>
   )
