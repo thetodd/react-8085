@@ -3,7 +3,7 @@ import './CodeEditor.css';
 
 const AssemblerEditor = () => {
     return <div className="editorshell">
-        <Editor height="80vh" defaultLanguage="asm" width="50vw" theme="light" defaultValue="ldi 0x23" />
+        <Editor height="80vh" defaultLanguage="asm" width="40vw" theme="light" defaultValue="ldi 0x23" />
         </div>;
 }
 
