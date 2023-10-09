@@ -1,14 +1,25 @@
+import { useState } from 'react'
 import './App.css'
-import AssemblerEditor from './CodeEditor'
+import AssemblerEditor from './widgets/CodeEditor'
 import FlagsRegister from './widgets/FlagsRegister'
 import MemoryView from './widgets/MemoryView'
 import RegisterView from './widgets/RegisterView'
 
 function App() {
+  const [editorValue, setValue] = useState('');
+  
+  const openFile = async () => {
+    const [fileHandle] = await window.showOpenFilePicker();
+    const file = await fileHandle.getFile();
+    const fileValue = await file.text();
+    
+    setValue(fileValue)
+  }
+
   return (
     <div id="shell">
       <div className="placeholder">
-        Main Menu
+        <button onClick={openFile}>Open...</button>
       </div>
       <div className="row">
         <div className="placeholder">
@@ -30,7 +41,7 @@ function App() {
         </div>
       </div>
       <div className="row">
-        <AssemblerEditor />
+        <AssemblerEditor value={editorValue} />
         <MemoryView startAddress={0x1800} cells={[0x15, 0xab, 0x34]}/>
       </div>
     </div>
