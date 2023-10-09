@@ -1,6 +1,7 @@
 import './App.css'
 import AssemblerEditor from './CodeEditor'
 import FlagsRegister from './widgets/FlagsRegister'
+import MemoryView from './widgets/MemoryView'
 import RegisterView from './widgets/RegisterView'
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
       </div>
       <div className="row">
         <AssemblerEditor />
-        <div className="placeholder">Memory</div>
+        <MemoryView startAddress={0x1800} cells={[0x15, 0xab, 0x34]}/>
       </div>
     </div>
   )
