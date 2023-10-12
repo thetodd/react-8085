@@ -13,17 +13,17 @@ const AssemblerEditor = ({ value }: AssemblerEditorType) => {
         if (monaco) {
             monaco.languages.register({ id: 'asm' })
             monaco.languages.setMonarchTokensProvider('asm', {
-                keywords: ['org', 'mvi', 'mov', 'hlt', 'add'],
+                keywords: ['org',],
                 tokenizer: {
                     root: [
                         [/^[a-z]+:$/, 'label'],
                         [/^@:$/, 'breakpoint'],
                         [/\/\/.*/, 'comment'],
-                        [/0x[0-9a-fA-F]{2}/, 'hex'],
+                        [/0x[0-9a-fA-F]{2,4}/, 'hex'],
                         [/@?[a-zA-Z][\w$]*/, {
                             cases: {
                                 '@keywords': 'keyword',
-                                '@default': 'variable',
+                                '@default': 'mnemonic',
                             }
                         }],
                     ]
@@ -38,7 +38,8 @@ const AssemblerEditor = ({ value }: AssemblerEditorType) => {
                 rules: [
                     { token: 'breakpoint', foreground: '#C2274C', fontStyle: 'bold' },
                     { token: 'label', foreground: '#555555' },
-                    { token: 'keyword', foreground: '#0D63CD' },
+                    { token: 'keyword', foreground: '#FF64A2' },
+                    { token: 'mnemonic', foreground: '#0D63CD' },
                     { token: 'hex', foreground: '#3B908D' },
                 ]
             })
