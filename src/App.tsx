@@ -4,9 +4,13 @@ import AssemblerEditor from './widgets/CodeEditor'
 import FlagsRegister from './widgets/FlagsRegister'
 import MemoryView from './widgets/MemoryView'
 import RegisterView from './widgets/RegisterView'
+import compile from './compiler/compiler'
 
 function App() {
   const [editorValue, setValue] = useState('');
+  const [startAddress, setStartAddress] = useState(0x2000);
+  const [memoryCells, setMemoryCells] = useState([0x15, 0xab, 0x34]);
+  const [sourceCode, setSourceCode] = useState("");
   
   const openFile = async () => {
     const [fileHandle] = await window.showOpenFilePicker();
@@ -16,10 +20,17 @@ function App() {
     setValue(fileValue)
   }
 
+  const assemble = () => {
+    const assembly = compile(sourceCode)
+    setMemoryCells(assembly.sections[0].bytes)
+    setStartAddress(assembly.sections[0].startAddress)
+  }
+
   return (
     <div id="shell">
       <div className="placeholder">
         <button onClick={openFile}>Open...</button>
+        <button onClick={assemble}>Assemble...</button>
       </div>
       <div className="row">
         <div className="placeholder">
@@ -41,8 +52,8 @@ function App() {
         </div>
       </div>
       <div className="row">
-        <AssemblerEditor value={editorValue} />
-        <MemoryView startAddress={0x1800} cells={[0x15, 0xab, 0x34]}/>
+        <AssemblerEditor value={editorValue} onChange={setSourceCode} />
+        <MemoryView startAddress={startAddress} cells={memoryCells}/>
       </div>
     </div>
   )

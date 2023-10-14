@@ -1,13 +1,18 @@
-import { Editor, useMonaco } from '@monaco-editor/react';
+import { Editor, OnChange, useMonaco } from '@monaco-editor/react';
 import './CodeEditor.css';
 import { useEffect } from 'react';
 
 type AssemblerEditorType = {
     value: string,
+    onChange: (value: string) => void,
 }
 
-const AssemblerEditor = ({ value }: AssemblerEditorType) => {
+const AssemblerEditor = ({ value, onChange }: AssemblerEditorType) => {
     const monaco = useMonaco()
+
+    const handleEditorChange: OnChange = (value) => {
+        onChange(value ?? "")
+    }
 
     useEffect(() => {
         if (monaco) {
@@ -49,7 +54,7 @@ const AssemblerEditor = ({ value }: AssemblerEditorType) => {
 
 
     return <div className="editorshell">
-        <Editor height="80vh" language="asm" width="40vw" theme="light" value={value} />
+        <Editor height="80vh" language="asm" width="40vw" theme="light" value={value} onChange={handleEditorChange} />
     </div>;
 }
 
