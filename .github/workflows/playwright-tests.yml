@@ -23,7 +23,7 @@ jobs:
         run: |
           pnpm i
       - name: Run Unit Tests
-        run: pnpm run test --reporter=junit > report.xml
+        run: pnpm run test
         continue-on-error: true
       - name: Test Report
         uses: dorny/test-reporter@v1
