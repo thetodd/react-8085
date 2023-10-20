@@ -31,6 +31,11 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'unit',
+      testDir: './tests/unit',
+      use: { },
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },

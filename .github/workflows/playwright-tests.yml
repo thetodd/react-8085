@@ -22,14 +22,13 @@ jobs:
       - name: Install dependencies
         run: |
           pnpm i
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
       - name: Run Unit Tests
-        run: pnpm run test --reporter=html
+        run: pnpm run test --reporter=junit > report.xml
         continue-on-error: true
-      - uses: actions/upload-artifact@v3
+      - name: Test Report
+        uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          name: Unit Tests
+          path: report.xml
+          reporter: jest-junit
