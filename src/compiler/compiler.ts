@@ -1,3 +1,5 @@
+import CompilerFunctions from './compilerFunctions'
+
 type Section = {
     startAddress: number,
     bytes: number[],
@@ -14,7 +16,13 @@ type Assembly = {
     labels: Label[],
 }
 
-const getRegisterAddress = (register: string): number => {
+export type CompileResult = {
+    bytes: number[],
+}
+
+export type CompileMnemonicFn = (args: string[]) => CompileResult
+
+export const getRegisterAddress = (register: string): number => {
     switch (register) {
         case 'a':
             return 0b111
@@ -33,7 +41,7 @@ const getRegisterAddress = (register: string): number => {
         case 'm':
             return 0b110
     }
-    return 0;
+    throw `Unknown register ${register}`
 }
 
 const compile = (source: string): Assembly => {
@@ -49,72 +57,16 @@ const compile = (source: string): Assembly => {
             const mnemonic = lineTokens[1]
             const args = (lineTokens[3]?.split(/,/) ?? []).map((arg) => arg.trim())
 
-            switch (mnemonic) {
-                case 'org':
-                    sections.push({
-                        startAddress: parseInt(args[0], 16),
-                        bytes: [],
-                    })
-                    lastSectionId = sections.length - 1
-                    break
-                case 'nop':
-                    sections[lastSectionId].bytes.push(0x00)
-                    break
-                case 'hlt':
-                    sections[lastSectionId].bytes.push(0x76)
-                    break
-                case 'mov':
-                    if (args[0] === 'a') {
-                        sections[lastSectionId].bytes.push(0x98 | getRegisterAddress(args[1]))
-                    }
-                    if (args[0] === 'b') {
-                        sections[lastSectionId].bytes.push(0x60 | getRegisterAddress(args[1]))
-                    }
-                    if (args[0] === 'c') {
-                        sections[lastSectionId].bytes.push(0x68 | getRegisterAddress(args[1]))
-                    }
-                    if (args[0] === 'd') {
-                        sections[lastSectionId].bytes.push(0x70 | getRegisterAddress(args[1]))
-                    }
-                    if (args[0] === 'e') {
-                        sections[lastSectionId].bytes.push(0x78 | getRegisterAddress(args[1]))
-                    }
-                    if (args[0] === 'h') {
-                        sections[lastSectionId].bytes.push(0x80 | getRegisterAddress(args[1]))
-                    }
-                    if (args[0] === 'l') {
-                        sections[lastSectionId].bytes.push(0x88 | getRegisterAddress(args[1]))
-                    }
-                    if (args[0] === 'm') {
-                        sections[lastSectionId].bytes.push(0x90 | getRegisterAddress(args[1]))
-                    }
-                    break
-                case 'mvi':
-                    if (args[0] === 'a') {
-                        sections[lastSectionId].bytes.push(0x3e)
-                    }
-                    if (args[0] === 'b') {
-                        sections[lastSectionId].bytes.push(0x06)
-                    }
-                    if (args[0] === 'c') {
-                        sections[lastSectionId].bytes.push(0x0e)
-                    }
-                    if (args[0] === 'd') {
-                        sections[lastSectionId].bytes.push(0x16)
-                    }
-                    if (args[0] === 'e') {
-                        sections[lastSectionId].bytes.push(0x1e)
-                    }
-                    if (args[0] === 'h') {
-                        sections[lastSectionId].bytes.push(0x26)
-                    }
-                    if (args[0] === 'l') {
-                        sections[lastSectionId].bytes.push(0x2e)
-                    }
-                    if (args[0] === 'm') {
-                        sections[lastSectionId].bytes.push(0x36)
-                    }
-                    break
+            if (Object.keys(CompilerFunctions).includes(mnemonic)) {
+                CompilerFunctions[mnemonic](args).bytes.forEach((byte) => sections[lastSectionId].bytes.push(byte))
+            }
+
+            if(mnemonic === 'org') {
+                sections.push({
+                    startAddress: parseInt(args[0], 16),
+                    bytes: [],
+                })
+                lastSectionId = sections.length - 1
             }
         }
     })
