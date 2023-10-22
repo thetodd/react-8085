@@ -13,7 +13,7 @@ const MemoryView = ({startAddress, cells = []}: MemoryViewProps) => {
 
     const memoryData = cells;
     const chunkSize = 16
-    var memoryCells = []
+    let memoryCells = []
     for (let i = 0; i < memoryData.length; i += chunkSize) {
         const chunk = memoryData.slice(i, i + chunkSize);
         // do whatever

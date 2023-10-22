@@ -48,7 +48,7 @@ const compile = (source: string): Assembly => {
     const lines = source.split("\n")
 
     const sections: Section[] = []
-    var lastSectionId = -1;
+    let lastSectionId = -1;
 
     lines.forEach((line) => {
         line = line.toLowerCase()
