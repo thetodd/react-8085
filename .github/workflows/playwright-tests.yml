@@ -26,11 +26,3 @@ jobs:
           pnpm i
       - name: Run Unit Tests
         run: pnpm run test
-        continue-on-error: true
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Unit Tests
-          path: results.xml
-          reporter: jest-junit
