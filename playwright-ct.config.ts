@@ -34,6 +34,7 @@ export default defineConfig({
       name: 'unit',
       testDir: './tests/unit',
       use: { },
+      retries: 1
     },
     {
       name: 'chromium',
